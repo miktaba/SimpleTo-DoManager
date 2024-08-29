@@ -10,7 +10,17 @@ import UIKit
 class TaskListController: UITableViewController {
     
     var tasksStorage: TasksStorageProtocol = TasksStorage()
-    var tasks: [TaskPriority:[TaskProtocol]] = [:]
+    var tasks: [TaskPriority:[TaskProtocol]] = [:] {
+        didSet {
+            for (taskGroupPriority, tasksGroup) in tasks {
+                tasks[taskGroupPriority] = tasksGroup.sorted{ task1, task2 in
+                    let taskOnePosition = tasksStatusPosition.firstIndex(of: task1.status) ?? 0
+                    let taskTwoPosition = tasksStatusPosition.firstIndex(of: task2.status) ?? 0
+                    return taskOnePosition < taskTwoPosition
+                }
+            }
+        }
+    }
     var sectionsTypesPosition: [TaskPriority] = [.important, .normal]
     var tasksStatusPosition: [TaskStatus] = [.planned, .completed]
     
@@ -27,14 +37,6 @@ class TaskListController: UITableViewController {
         
         tasksStorage.loadTasks().forEach { task in
             tasks[task.type]?.append(task)
-        }
-            
-        for (taskGroupPriority, tasksGroup) in tasks {
-            tasks[taskGroupPriority] = tasksGroup.sorted { task1, task2 in
-                let taskOnePosition = tasksStatusPosition.firstIndex(of: task1.status) ?? 0
-                let taskTwoPosition = tasksStatusPosition.firstIndex(of: task2.status) ?? 0
-                return taskOnePosition < taskTwoPosition
-            }
         }
     }
 
@@ -68,6 +70,22 @@ class TaskListController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return getConfiguredTaskCell_stack(for: indexPath)
         /*getConfiguredTaskCell_constraints(for: indexPath)*/
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let taskType = sectionsTypesPosition[indexPath.section]
+        guard let _ = tasks[taskType]?[indexPath.row] else {
+            return
+        }
+        
+        guard tasks[taskType]![indexPath.row].status == .planned else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+        
+        tasks[taskType]![indexPath.row].status = .completed
+        
+        tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
     }
     
     // MARK: - Private methods
