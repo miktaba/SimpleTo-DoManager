@@ -28,16 +28,7 @@ class TaskListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTasks()
-    }
-    
-    private func loadTasks() {
-        sectionsTypesPosition.forEach { taskType in
-            tasks[taskType] = []
-        }
-        
-        tasksStorage.loadTasks().forEach { task in
-            tasks[task.type]?.append(task)
-        }
+        //navigationItem.leftBarButtonItem = editButtonItem
     }
 
     // MARK: - Table view data source
@@ -86,6 +77,21 @@ class TaskListController: UITableViewController {
         tasks[taskType]![indexPath.row].status = .completed
         
         tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let taskType = sectionsTypesPosition[indexPath.section]
+        guard let _ = tasks[taskType]?[indexPath.row] else {
+                return nil
+        }
+        guard tasks[taskType]![indexPath.row].status == .completed else {
+            return nil
+        }
+        let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not completed") { _,_,_ in
+            self.tasks[taskType]![indexPath.row].status = .planned
+            self.tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+        }
+        return UISwipeActionsConfiguration(actions: [actionSwipeInstance])
     }
     
     // MARK: - Private methods
@@ -143,5 +149,15 @@ class TaskListController: UITableViewController {
             resultSymbol = ""
         }
         return resultSymbol
+    }
+    
+    private func loadTasks() {
+        sectionsTypesPosition.forEach { taskType in
+            tasks[taskType] = []
+        }
+        
+        tasksStorage.loadTasks().forEach { task in
+            tasks[task.type]?.append(task)
+        }
     }
 }
