@@ -15,6 +15,7 @@ protocol TasksStorageProtocol {
 class TasksStorage: TasksStorageProtocol {
     func loadTasks() -> [any TaskProtocol] {
         let testTasks: [TaskProtocol] = [
+            Task(title: "Read a book with many many many many many many many many words", type: .normal, status: .planned),
             Task(title: "Buy bread", type: .normal, status: .planned),
             Task(title: "Go to the gym", type: .normal, status: .completed),
             Task(title: "Write a letter", type: .important, status: .planned),
