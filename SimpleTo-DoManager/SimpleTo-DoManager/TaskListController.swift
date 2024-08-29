@@ -28,10 +28,16 @@ class TaskListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTasks()
-        //navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem = editButtonItem
     }
 
     // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let taskType = sectionsTypesPosition[indexPath.section]
+        tasks[taskType]?.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
     // numberOfSections returns the number of sections in the table
     override func numberOfSections(in tableView: UITableView) -> Int {
         return tasks.count
