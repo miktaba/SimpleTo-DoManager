@@ -27,6 +27,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		847D81DC2C807B40002BCDC3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Cels/TaskCellTableViewCell.swift,
+			);
+			target = 84B0E90F2C7E116D00478E4B /* SimpleTo-DoManager */;
+		};
 		84B0E92D2C7E217A00478E4B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -38,6 +45,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		847D81D72C807AE9002BCDC3 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (847D81DC2C807B40002BCDC3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		84B0E9292C7E214000478E4B /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (84B0E92D2C7E217A00478E4B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -71,6 +79,7 @@
 		84B0E9122C7E116D00478E4B /* SimpleTo-DoManager */ = {
 			isa = PBXGroup;
 			children = (
+				847D81D72C807AE9002BCDC3 /* View */,
 				84B0E9292C7E214000478E4B /* Model */,
 				84B0E9132C7E116D00478E4B /* AppDelegate.swift */,
 				84B0E9152C7E116D00478E4B /* SceneDelegate.swift */,
