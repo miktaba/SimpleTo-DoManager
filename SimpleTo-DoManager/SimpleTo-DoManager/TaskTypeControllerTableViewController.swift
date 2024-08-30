@@ -9,6 +9,8 @@ import UIKit
 
 class TaskTypeControllerTableViewController: UITableViewController {
     
+    var doAfterTypeSelected: ((TaskPriority) -> Void)?
+    
     typealias TypeCellDescription = (type: TaskPriority, title: String, description: String)
     
     private var taskTypeInformation: [TypeCellDescription] = [(
@@ -32,6 +34,12 @@ class TaskTypeControllerTableViewController: UITableViewController {
         let cellTypeNib = UINib(nibName: "TaskTypeCellTableViewCell", bundle: nil)
         tableView.register(cellTypeNib, forCellReuseIdentifier: "TaskTypeCellTableViewCell")
         
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedType = taskTypeInformation[indexPath.row].type
+        doAfterTypeSelected?(selectedType)
+        navigationController?.popViewController(animated: true)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

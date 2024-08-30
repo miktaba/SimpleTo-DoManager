@@ -20,7 +20,12 @@ class TaskEditControllerTableViewController: UITableViewController {
     
     @IBOutlet var taskTitleLable: UITextField!
     @IBOutlet var taskTypeLabel: UILabel!
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        taskTitleLable?.text = taskText
+        taskTypeLabel?.text = taskTitles[taskType]
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -30,10 +35,16 @@ class TaskEditControllerTableViewController: UITableViewController {
         return 3
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        taskTitleLable?.text = taskText
-        taskTypeLabel?.text = taskTitles[taskType]
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toTaskTypeScreen" {
+            let destination = segue.destination as! TaskTypeControllerTableViewController
+            destination.selectedType = taskType
+            destination.doAfterTypeSelected = { [unowned self] selectedType in
+                taskType = selectedType
+                taskTypeLabel.text = taskTitles[taskType]
+            }
+        }
     }
+
 
 }
