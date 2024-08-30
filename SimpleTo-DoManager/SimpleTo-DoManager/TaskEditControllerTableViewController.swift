@@ -33,11 +33,26 @@ class TaskEditControllerTableViewController: UITableViewController {
     }
     
     @IBAction func saveTask(_ sender: UIBarButtonItem) {
-        let title = taskTitleLable?.text ?? ""
+        let trimmedText = taskTitleLable.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        guard !trimmedText.isEmpty else {
+            showAlert(with: "Error", message: "The field must not be empty or consist only of spaces")
+            return
+        }
+
+        let title = trimmedText
         let type = taskType
         let status: TaskStatus = taskStatusSwitch.isOn ? .completed : .planned
         doAfterEdit?(title, type, status)
         navigationController?.popViewController(animated: true)
+
+    }
+    
+    func showAlert(with title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController,animated: true, completion: nil)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

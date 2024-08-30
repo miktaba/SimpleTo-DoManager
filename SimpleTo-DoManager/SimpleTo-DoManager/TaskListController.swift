@@ -19,30 +19,32 @@ class TaskListController: UITableViewController {
                     return taskOnePosition < taskTwoPosition
                 }
             }
+            var savingArrey: [TaskProtocol] = []
+            tasks.forEach { _, value in
+                savingArrey += value
+            }
+            tasksStorage.saveTasks(savingArrey)
         }
     }
     var sectionsTypesPosition: [TaskPriority] = [.important, .normal]
     var tasksStatusPosition: [TaskStatus] = [.planned, .completed]
     
-    // MARK: - Lifecicle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadTasks()
         navigationItem.leftBarButtonItem = editButtonItem
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toCreateScreen" {
-            let destinationVC = segue.destination as! TaskEditControllerTableViewController
-            destinationVC.doAfterEdit = { [unowned self] title, type, status in
-                let newTask = Task(title: title, type: type, status: status)
-                tasks[type]?.append(newTask)
-                tableView.reloadData()
-            }
+    // MARK: - Public Methods
+    func setTasks(_ tasksCollection: [TaskProtocol]) {
+        sectionsTypesPosition.forEach { taskType in
+            tasks[taskType] = []
+        }
+        tasksCollection.forEach { task in
+            tasks[task.type]?.append(task)
         }
     }
     
-    // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let taskTypeFrom = sectionsTypesPosition[sourceIndexPath.section]
         let taskTypeTo = sectionsTypesPosition[destinationIndexPath.section]
@@ -83,8 +85,8 @@ class TaskListController: UITableViewController {
         if tasksType == .important {
             title = "Important"
         } else if tasksType == .normal {
-            title = "Normal"
-        }
+            title = "Current"
+    }
         return title
     }
     
@@ -210,6 +212,18 @@ class TaskListController: UITableViewController {
         
         tasksStorage.loadTasks().forEach { task in
             tasks[task.type]?.append(task)
+        }
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCreateScreen" {
+            let destinationVC = segue.destination as! TaskEditControllerTableViewController
+            destinationVC.doAfterEdit = { [self] title, type, status in
+                let newTask = Task(title: title, type: type, status: status)
+                tasks[type]?.append(newTask)
+                tableView.reloadData()
+            }
         }
     }
 }
