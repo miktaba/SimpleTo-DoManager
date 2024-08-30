@@ -20,11 +20,16 @@ class TaskEditControllerTableViewController: UITableViewController {
     
     @IBOutlet var taskTitleLable: UITextField!
     @IBOutlet var taskTypeLabel: UILabel!
+    @IBOutlet var taskStatusSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         taskTitleLable?.text = taskText
         taskTypeLabel?.text = taskTitles[taskType]
+        
+        if taskStatus == .completed {
+            taskStatusSwitch.isOn = true
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
