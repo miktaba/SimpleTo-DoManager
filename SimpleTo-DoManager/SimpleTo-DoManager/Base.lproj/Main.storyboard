@@ -98,7 +98,7 @@
                     <navigationItem key="navigationItem" id="kaA-0P-ihN">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="R2W-iC-TSf">
                             <connections>
-                                <segue destination="eeN-Ef-xvV" kind="show" id="8YQ-mV-Way"/>
+                                <segue destination="eeN-Ef-xvV" kind="show" identifier="toCreateScreen" id="8YQ-mV-Way"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -210,8 +210,15 @@
                             <outlet property="delegate" destination="eeN-Ef-xvV" id="miH-gP-Imm"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="TgE-jB-wZr"/>
+                    <navigationItem key="navigationItem" id="TgE-jB-wZr">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="b4N-je-xz5">
+                            <connections>
+                                <action selector="saveTask:" destination="eeN-Ef-xvV" id="gqa-nD-Q0K"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="taskStatusSwitch" destination="st2-9U-3X1" id="vNf-Mf-4mk"/>
                         <outlet property="taskTitleLable" destination="tTH-WI-lrc" id="7FJ-6X-fcy"/>
                         <outlet property="taskTypeLabel" destination="4lf-N8-4NZ" id="y1F-fA-hsI"/>
                     </connections>

@@ -32,6 +32,14 @@ class TaskEditControllerTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func saveTask(_ sender: UIBarButtonItem) {
+        let title = taskTitleLable?.text ?? ""
+        let type = taskType
+        let status: TaskStatus = taskStatusSwitch.isOn ? .completed : .planned
+        doAfterEdit?(title, type, status)
+        navigationController?.popViewController(animated: true)
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -50,6 +58,4 @@ class TaskEditControllerTableViewController: UITableViewController {
             }
         }
     }
-
-
 }
